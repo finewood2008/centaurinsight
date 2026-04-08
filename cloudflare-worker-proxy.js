@@ -16,10 +16,10 @@ export default {
     }
 
     // 2. 在这里填入你的 Google Gemini API Key（放在这里最安全，前端看不到）
-    const API_KEY = "AIzaSyBZwVeKQu21DqYUzr5UTmVa8R0RhAez2iI";
+    const API_KEY = "AIzaSyB8Bz1sELnbKB8q-5rZWa_wGY0gG1vELdU";
     
     // 3. 构建发往 Google 官方服务器的请求
-    const googleUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
+    const googleUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
     
     const originalBody = await request.text();
 
