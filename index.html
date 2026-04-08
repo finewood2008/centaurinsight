@@ -334,6 +334,12 @@
                     body: JSON.stringify(requestBody)
                 });
 
+                // 新增：如果 HTTP 状态码不是 200，直接抛出错误信息方便调试
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+
                 const data = await response.json();
                 
                 if (data.candidates && data.candidates[0].content) {
@@ -348,12 +354,13 @@
                     
                     startChat();
                 } else {
-                    throw new Error("模型未返回有效内容");
+                    throw new Error("模型未返回有效内容: " + JSON.stringify(data));
                 }
             } catch (error) {
                 console.error("Gemini API Error:", error);
-                el.innerText = "API 解析超时或失败，降级为兜底模式...";
-                setTimeout(startChat, 1500); // 失败也继续走流程
+                // 把真实的报错原因打印在屏幕上
+                el.innerHTML = `<span style="color: #ef4444;">API 解析失败：${error.message.substring(0, 100)}...</span><br>正在降级为兜底模式...`;
+                setTimeout(startChat, 3000); 
             }
         }
 
