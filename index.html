@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Centaur Insight | 私行级 AI 商业顾问</title>
+    <title>Centaur Insight | 顶级商业战略顾问</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -15,6 +15,7 @@
                         dark: '#050505',
                         glass: 'rgba(20, 20, 20, 0.6)',
                         accent: '#4ade80',
+                        accentDark: '#22c55e',
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -33,9 +34,9 @@
         }
 
         .glass-card {
-            background: rgba(25, 25, 25, 0.4);
+            background: rgba(25, 25, 25, 0.6);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1.25rem;
         }
 
@@ -58,38 +59,51 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* 提取卡片动画 */
+        .scan-line {
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: #4ade80;
+            box-shadow: 0 0 10px #4ade80;
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+
         .chat-ai {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 0.75rem 0.75rem 0.75rem 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
         .chat-user {
             background: rgba(74, 222, 128, 0.1);
             border: 1px solid rgba(74, 222, 128, 0.3);
             border-radius: 0.75rem 0.75rem 0 0.75rem;
             color: #4ade80;
+            font-size: 0.9rem;
         }
 
-        .typing-indicator span {
-            display: inline-block;
-            width: 4px; height: 4px;
-            background-color: #4ade80;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
+        /* 打字机光标 */
+        .cursor-blink::after {
+            content: '▋';
+            animation: blink 1s step-start infinite;
+            color: #4ade80;
+            margin-left: 2px;
         }
-        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
+        @keyframes blink { 50% { opacity: 0; } }
 
         .radar-box {
-            width: 120px; height: 120px;
+            width: 140px; height: 140px;
             border-radius: 50%;
             border: 1px solid rgba(74, 222, 128, 0.3);
             position: relative;
             overflow: hidden;
+            background: radial-gradient(circle, rgba(74,222,128,0.05) 0%, transparent 70%);
         }
         .radar-box::before {
             content: ''; position: absolute; inset: 0;
@@ -98,19 +112,36 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Markdown 样式 */
+        .log-line { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #4ade80; opacity: 0.8; margin-top: 4px; }
+
         .markdown-body strong { color: #4ade80; font-weight: 600; }
         .markdown-body p { margin-bottom: 0.5rem; }
         .markdown-body p:last-child { margin-bottom: 0; }
+        .markdown-body ul { padding-left: 1.2rem; list-style-type: disc; margin-bottom: 0.5rem; }
+        
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+        /* 三选一按钮样式 */
+        .reply-option-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.8rem;
+            text-align: left;
+            color: #ccc;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .reply-option-btn:hover { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.3); color: #4ade80; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative w-full max-w-md mx-auto">
 
     <!-- Header -->
-    <header class="p-6 flex flex-col items-center justify-center shrink-0 z-50 bg-dark/80 backdrop-blur-md">
+    <header class="p-6 flex flex-col items-center justify-center shrink-0 z-50 bg-dark/90 backdrop-blur-md border-b border-white/5 relative">
         <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
             <i data-lucide="layers" class="w-6 h-6 text-black"></i>
         </div>
@@ -118,108 +149,145 @@
         <p class="text-[10px] text-accent tracking-widest font-mono opacity-80 uppercase mt-1">Deep AI Consultant</p>
     </header>
 
-    <!-- 步骤 1：业务方向 + 扫描名片入场 -->
+    <!-- ================= VIEW 1: 首页 ================= -->
     <main id="step-1" class="flex-grow px-6 flex flex-col justify-center fade-in z-10 pb-20">
         <div class="text-center mb-10">
-            <h2 class="text-3xl font-light mb-3 leading-tight">开启专属推演<br><span class="font-semibold text-white">锁定核心瓶颈</span></h2>
-            <p class="text-sm text-gray-400">系统将结合您的主营方向与企业档案进行诊断</p>
+            <h2 class="text-3xl font-light mb-3 leading-tight">战略级洞察<br><span class="font-semibold text-white">属于少数派</span></h2>
+            <p class="text-sm text-gray-400">系统将为您生成专属商业分析报告并建立私域顾问档案。</p>
         </div>
 
         <div class="space-y-6 w-full">
-            <!-- 业务输入框 -->
             <div class="relative group">
                 <div class="absolute -inset-1 bg-gradient-to-r from-accent/20 to-white/10 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-500"></div>
                 <input type="text" id="init-product" 
                        class="relative w-full bg-dark border border-white/20 text-white rounded-xl px-5 py-4 text-sm focus:border-accent outline-none placeholder-gray-500 shadow-inner"
-                       placeholder="一句话描述核心业务 (如：北美储能代工)"
+                       placeholder="一句话描述您的核心业务 (如: 出海SaaS平台)"
                        oninput="checkInitInput()">
             </div>
             
-            <!-- 隐藏的相机 input -->
             <input type="file" id="cam-card" accept="image/*" capture="environment" onchange="handleCapture()" style="display: none;">
             
-            <!-- 连线按钮 (默认置灰) -->
             <button type="button" onclick="triggerCamera()" id="btn-card" disabled
                     class="btn-glow w-full h-14 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                 <i data-lucide="scan-face" class="w-5 h-5"></i>
-                <span class="text-sm font-semibold tracking-wide">拍摄名片并连线顾问</span>
+                <span class="text-sm font-semibold tracking-wide">扫描名片建立档案</span>
             </button>
         </div>
     </main>
 
-    <!-- 步骤 1.5：识别过渡页 -->
-    <main id="step-loading" class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-dark/90 backdrop-blur view-hidden">
+    <!-- ================= VIEW 1.5: 数据抓取与识别 ================= -->
+    <main id="step-loading" class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-dark/95 backdrop-blur view-hidden">
         <div class="radar-box mb-8 shadow-[0_0_30px_rgba(74,222,128,0.2)]"></div>
-        <h3 class="text-lg font-medium mb-2 tracking-widest text-accent font-mono">档案解析中...</h3>
-        <p class="text-xs text-gray-400 font-mono text-center">正在提炼企业核心特征并融合业务数据</p>
+        <h3 class="text-lg font-medium mb-1 tracking-widest text-accent font-mono">ESTABLISHING CONNECTION...</h3>
+        
+        <!-- 名片识别展示框 -->
+        <div id="card-result-box" class="w-[80%] max-w-xs border border-white/10 rounded-lg p-4 bg-white/5 relative overflow-hidden mb-6 opacity-0 transition-opacity duration-500">
+            <div class="scan-line"></div>
+            <p class="text-xs text-gray-400 font-mono mb-2">TARGET ACQUIRED</p>
+            <div class="font-mono text-sm space-y-1">
+                <p><span class="text-gray-500">NAME:</span> <span id="res-name" class="text-white"></span></p>
+                <p><span class="text-gray-500">ROLE:</span> <span id="res-title" class="text-white"></span></p>
+                <p><span class="text-gray-500">CORP:</span> <span id="res-company" class="text-white"></span></p>
+            </div>
+        </div>
+
+        <!-- 互联网搜索日志墙 -->
+        <div id="search-logs" class="w-[80%] max-w-xs h-24 overflow-hidden flex flex-col justify-end text-left">
+            <!-- 动态插入日志 -->
+        </div>
     </main>
 
-    <!-- 步骤 2：互动推演界面 -->
-    <main id="step-2" class="absolute inset-0 top-[110px] z-20 flex flex-col bg-dark view-hidden">
-        <div id="chat-box" class="flex-grow p-5 overflow-y-auto flex flex-col gap-5 pb-28 custom-scrollbar"></div>
+    <!-- ================= VIEW 2: 顾问会谈 ================= -->
+    <main id="step-2" class="absolute inset-0 top-[90px] z-20 flex flex-col bg-dark view-hidden">
+        <div id="chat-box" class="flex-grow p-5 overflow-y-auto flex flex-col gap-5 pb-40 custom-scrollbar"></div>
 
-        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-dark via-dark to-transparent z-30">
+        <div class="absolute bottom-0 left-0 right-0 z-30 bg-dark/90 backdrop-blur-md border-t border-white/5 p-4 pt-2">
+            
+            <!-- 选项卡片区 -->
+            <div id="options-wrapper" class="flex flex-col gap-2 mb-3 view-hidden">
+                <!-- 动态插入按钮 -->
+            </div>
+
+            <!-- 手动输入区 -->
             <div id="chat-input-wrapper" class="glass-card flex items-end gap-2 p-2 relative fade-in">
                 <textarea id="chat-input" rows="1" 
                           class="w-full bg-transparent text-sm text-white px-3 py-2 outline-none resize-none max-h-24 custom-scrollbar placeholder-gray-500" 
-                          placeholder="描述您的业务痛点..."
+                          placeholder="手动输入补充信息..."
                           oninput="autoResize(this)"></textarea>
-                <button onclick="sendMessage()" id="btn-send" class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0 hover:bg-accent/20 transition-colors">
+                <button onclick="sendManualMessage()" id="btn-send" class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0 hover:bg-accent/20 transition-colors">
                     <i data-lucide="arrow-up" class="w-5 h-5 text-accent"></i>
                 </button>
             </div>
 
-            <!-- 收网留资表单 (预填邮箱) -->
-            <div id="lead-gen-wrapper" class="glass-card p-4 view-hidden fade-in border-accent/30 shadow-[0_0_30px_rgba(74,222,128,0.1)]">
-                <p class="text-xs text-accent font-mono mb-3 text-center">◆ 完整战略报告已生成，请确认接收邮箱 ◆</p>
-                <div class="flex gap-2">
-                    <input type="email" id="email-input" class="flex-grow bg-white/5 border border-white/20 text-white text-sm rounded-lg px-3 py-2.5 outline-none focus:border-accent" placeholder="您的企业邮箱">
-                    <button onclick="submitLead()" class="px-5 rounded-lg bg-accent text-black font-semibold text-sm hover:bg-green-300">
-                        确定接收
+            <!-- 终极留资模块 -->
+            <div id="lead-gen-wrapper" class="glass-card p-5 view-hidden fade-in border-red-500/30 shadow-[0_0_30px_rgba(239,68,68,0.1)] relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-500"></div>
+                <p class="text-[11px] text-red-400 font-mono mb-1 text-center font-bold tracking-widest">[ SYSTEM ALERT ]</p>
+                <p class="text-sm font-semibold text-white text-center mb-4">核心痛点已锁定，正在生成万字深度研报</p>
+                
+                <div class="flex flex-col gap-3">
+                    <input type="email" id="email-input" class="w-full bg-black/50 border border-white/20 text-white text-sm rounded-lg px-4 py-3 outline-none focus:border-red-400" placeholder="接收报告的邮箱地址">
+                    
+                    <div class="flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/10">
+                        <div class="w-12 h-12 bg-white rounded flex items-center justify-center shrink-0">
+                            <!-- 占位二维码 -->
+                            <i data-lucide="qr-code" class="w-8 h-8 text-black"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xs text-gray-300">添加专属人类顾问微信</p>
+                            <p class="text-sm font-bold text-white">获取报告解密密码</p>
+                        </div>
+                    </div>
+
+                    <button onclick="submitLead()" class="w-full py-3 rounded-lg bg-white text-black font-bold text-sm hover:bg-gray-200 mt-2">
+                        确认接收并建档
                     </button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- 步骤 3：成功页面 -->
+    <!-- ================= VIEW 3: 成功页 ================= -->
     <div id="step-3" class="absolute inset-0 z-50 flex items-center justify-center bg-dark view-hidden">
         <div class="text-center fade-in px-6">
             <div class="relative w-20 h-20 mx-auto mb-6">
                 <div class="absolute inset-0 bg-accent/20 rounded-full animate-ping"></div>
                 <div class="relative w-full h-full rounded-full border-2 border-accent flex items-center justify-center bg-dark">
-                    <i data-lucide="send" class="w-8 h-8 text-accent ml-1"></i>
+                    <i data-lucide="check" class="w-8 h-8 text-accent"></i>
                 </div>
             </div>
-            <h2 class="text-2xl font-light mb-3">研报投递中</h2>
+            <h2 class="text-2xl font-light mb-3">研报生成中...</h2>
             <p class="text-gray-400 text-sm leading-relaxed mb-8">
-                高级战略研究员将在二次核验后<br>将定制报告发送至您的邮箱。
+                您的专属商业分析报告已进入计算队列<br>请留意您的邮箱及微信通知。
             </p>
-            <button onclick="location.reload()" class="text-xs text-gray-500 tracking-widest font-mono uppercase hover:text-white transition-colors">
-                [ 返回首页迎接下一位访客 ]
-            </button>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-
         const PROXY_URL = "https://gemini-proxy.finewood2008.workers.dev";
         
-        let extractedData = { name: "贵宾", title: "负责人", company: "贵公司", email: "" };
+        let extractedData = { name: "贵宾", title: "负责人", company: "贵司", email: "" };
         let businessDesc = "";
         let chatHistory = [];
         let turnCount = 0; 
 
+        // 假装搜索的日志数组
+        const searchLogs = [
+            "Initializing deep web crawler...",
+            "Scanning industry database for {company}...",
+            "Analyzing competitors data points...",
+            "Cross-referencing {business} market trends...",
+            "Extracting sentiment from recent news...",
+            "Compiling strategic matrix..."
+        ];
+
         function checkInitInput() {
             const val = document.getElementById('init-product').value.trim();
-            const btn = document.getElementById('btn-card');
-            btn.disabled = val.length === 0;
+            document.getElementById('btn-card').disabled = val.length === 0;
         }
 
-        function triggerCamera() {
-            document.getElementById('cam-card').click();
-        }
+        function triggerCamera() { document.getElementById('cam-card').click(); }
 
         function compressImage(file, maxWidth = 600) {
             return new Promise((resolve, reject) => {
@@ -230,18 +298,12 @@
                     img.src = event.target.result;
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        if (width > maxWidth) {
-                            height = Math.round(height * maxWidth / width);
-                            width = maxWidth;
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
+                        let width = img.width; let height = img.height;
+                        if (width > maxWidth) { height = Math.round(height * maxWidth / width); width = maxWidth; }
+                        canvas.width = width; canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
-                        resolve(dataUrl.split(',')[1]); 
+                        resolve(canvas.toDataURL('image/jpeg', 0.6).split(',')[1]); 
                     };
                     img.onerror = reject;
                 };
@@ -252,7 +314,6 @@
             const fileInput = document.getElementById('cam-card');
             if(fileInput.files && fileInput.files[0]) {
                 businessDesc = document.getElementById('init-product').value.trim();
-                
                 document.getElementById('step-1').classList.add('view-hidden');
                 document.getElementById('step-loading').classList.remove('view-hidden');
 
@@ -261,64 +322,76 @@
                     const base64Data = await compressImage(file);
                     await extractCardInfo(base64Data);
                 } catch (e) {
-                    console.error("压缩或识别失败", e);
-                    startChat(); 
+                    console.error("OCR Failed", e);
+                    simulateSearchAndStart(); 
                 }
             }
         }
 
         async function extractCardInfo(base64Data) {
-            const requestBody = {
-                contents: [{
-                    parts: [
-                        { text: `请精准提取这张名片的信息，必须严格返回以下JSON格式（不要加任何代码块修饰符，纯JSON字符串）：{"name": "姓名或留空", "title": "职位或负责人", "company": "公司全称或留空", "email": "邮箱或留空"}。` },
-                        { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
-                    ]
-                }]
+            const reqBody = {
+                contents: [{ parts: [
+                    { text: `精准提取名片信息返回JSON：{"name": "姓名", "title": "职位", "company": "公司", "email": "邮箱"}` },
+                    { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
+                ]}]
             };
-
             try {
-                const response = await fetch(PROXY_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(requestBody)
-                });
-                const data = await response.json();
-                let aiText = data.candidates[0].content.parts[0].text;
-                aiText = aiText.replace(/```json/g, "").replace(/```/g, "").trim();
+                const res = await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(reqBody) });
+                const data = await res.json();
+                let aiText = data.candidates[0].content.parts[0].text.replace(/```json/g, "").replace(/```/g, "").trim();
                 const parsed = JSON.parse(aiText);
-                
                 if (parsed.name) extractedData.name = parsed.name.split(' ')[0]; 
                 if (parsed.title) extractedData.title = parsed.title;
                 if (parsed.company) extractedData.company = parsed.company;
                 if (parsed.email) extractedData.email = parsed.email;
+            } catch (err) { console.log("OCR err", err); }
+            simulateSearchAndStart();
+        }
 
-                startChat();
-            } catch (err) {
-                console.error("提取失败", err);
-                startChat(); 
+        // 模拟互联网搜索过程
+        async function simulateSearchAndStart() {
+            // 1. 展示名片识别结果
+            document.getElementById('res-name').innerText = extractedData.name;
+            document.getElementById('res-title').innerText = extractedData.title;
+            document.getElementById('res-company').innerText = extractedData.company;
+            document.getElementById('card-result-box').style.opacity = 1;
+
+            const logContainer = document.getElementById('search-logs');
+            
+            // 2. 逐行输出搜索日志
+            for (let i = 0; i < searchLogs.length; i++) {
+                await new Promise(r => setTimeout(r, 600)); // 间隔 0.6s
+                const text = searchLogs[i].replace('{company}', extractedData.company).replace('{business}', businessDesc);
+                logContainer.innerHTML += `<div class="log-line fade-in">> ${text}</div>`;
             }
+            
+            await new Promise(r => setTimeout(r, 1000));
+            startChat();
         }
 
         function startChat() {
             document.getElementById('step-loading').classList.add('view-hidden');
             document.getElementById('step-2').classList.remove('view-hidden');
 
-            const isKnown = extractedData.company !== "贵公司";
+            const isKnown = extractedData.company !== "贵司";
             const honorific = isKnown && extractedData.name !== "贵宾" ? `**${extractedData.name}** ${extractedData.title}` : `贵宾`;
 
-            const SYSTEM_PROMPT = `你是顶尖的麦肯锡级AI商业战略顾问。现在在展会现场与【${extractedData.company}】的 ${honorific} 对话。客户的自述主营业务是：【${businessDesc}】。
-核心原则：
-1. 字数极度克制（100字左右），多用专业短句，拒绝废话。
-2. 犀利、一针见血，展现高级感。
-3. 接下来的对话流程：第一轮你只负责给高含金量破局建议（Wow Moment）。然后顺势收网，告诉客户完整报告已打包生成发送邮箱，坚决不再提问新问题。`;
+            // 严密的 SYSTEM PROMPT：强制输出报告 + 3个选项
+            const SYSTEM_PROMPT = `你是一名身价千万的顶尖AI商业战略顾问。
+客户公司：【${extractedData.company}】
+客户身份：【${honorific}】
+核心业务：【${businessDesc}】
 
-            chatHistory = [{ role: "user", parts: [{ text: SYSTEM_PROMPT }] }, { role: "model", parts: [{ text: "明白，严格执行高管级顾问人设及收网流程。" }] }];
+要求：
+1. 第一轮回复：基于他的业务和公司，给出一份约300字的【深度市场破冰洞察】，必须犀利指出行业痛点，展现出极高的专业度。
+2. 格式要求：使用Markdown排版，重点加粗。
+3. 选项机制（核心）：在你的回复结尾，【必须】提供3个深入探讨的选项，用来引导用户。选项格式严格如下（每行一个，必须以"选项X: "开头）：
+选项1: [提问或探讨方向1]
+选项2: [提问或探讨方向2]
+选项3: [提问或探讨方向3]`;
 
-            // AI 主离开场白
-            const openingMsg = `你好，${honorific}。系统已扫描建立**【${extractedData.company}】**的商业基本盘。<br><br>结合您刚才提到的**【${businessDesc}】**核心业务，请告诉我，贵司当前最大的痛点是寻找高质量的大客户线索，还是突破现有赛道的同质化内卷以实现品牌溢价？（或者描述您的其他业务瓶颈）`;
-            
-            appendAiMsg(marked.parse(openingMsg));
+            chatHistory = [{ role: "user", parts: [{ text: SYSTEM_PROMPT }] }];
+            fetchAIResponse(SYSTEM_PROMPT, true); // 第一次静默发送并获取惊艳开场
         }
 
         function autoResize(textarea) {
@@ -326,109 +399,158 @@
             textarea.style.height = textarea.scrollHeight + 'px';
         }
 
-        async function sendMessage() {
+        // 点击选项按钮发送
+        function sendOptionMessage(text) {
+            hideOptions();
+            document.getElementById('chat-input').value = '';
+            appendUserMsg(text);
+            handleTurn(text);
+        }
+
+        // 手动输入发送
+        function sendManualMessage() {
             const inputEl = document.getElementById('chat-input');
             const text = inputEl.value.trim();
             if (!text) return;
-
-            inputEl.value = '';
-            inputEl.style.height = 'auto';
+            inputEl.value = ''; inputEl.style.height = 'auto';
+            hideOptions();
             appendUserMsg(text);
-
-            turnCount++;
-
-            let promptToSend = text;
-            if (turnCount >= 1) {
-                promptToSend += "\n\n(System Note: 请针对痛点给出极其犀利的破局思路。说完后立刻结尾告知：现场演示时间有限，《定制化深度战略报告》已打包完毕，要求客户确认底部邮箱接收，绝不提出任何新问题。)";
-            }
-
-            await fetchAIResponse(promptToSend);
-            
-            if (turnCount >= 1) {
-                setTimeout(() => {
-                    document.getElementById('chat-input-wrapper').classList.add('view-hidden');
-                    document.getElementById('lead-gen-wrapper').classList.remove('view-hidden');
-                    if(extractedData.email) {
-                        document.getElementById('email-input').value = extractedData.email;
-                    }
-                    scrollToBottom();
-                }, 1500);
-            }
+            handleTurn(text);
         }
 
-        async function fetchAIResponse(userText) {
-            chatHistory.push({ role: "user", parts: [{ text: userText }] });
-            const typingId = showTypingIndicator();
+        function hideOptions() {
+            document.getElementById('options-wrapper').classList.add('view-hidden');
+            document.getElementById('options-wrapper').innerHTML = '';
+        }
 
-            try {
-                const response = await fetch(PROXY_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: chatHistory })
-                });
+        async function handleTurn(userText) {
+            turnCount++;
+            let promptToSend = userText;
 
-                if (!response.ok) throw new Error("Network error");
-                const data = await response.json();
-                let aiText = data.candidates[0].content.parts[0].text;
-                
-                chatHistory.push({ role: "model", parts: [{ text: aiText }] });
-                removeTypingIndicator(typingId);
-                appendAiMsg(marked.parse(aiText));
+            // 第3轮，强制截断并逼单
+            if (turnCount >= 2) {
+                promptToSend += "\n\n(System Note: 客户已经透露核心痛点。此次回复不要再给选项。请简短回复一句：'我已经锁定了您业务的致命卡点与增长杠杆，系统正在为您生成万字深度研报。请查收。')";
+            } else {
+                promptToSend += "\n\n(System Note: 请针对客户的回答进行犀利分析，并在结尾严格按照'选项1: ...'的格式给出3个追问选项。)";
+            }
 
-            } catch (error) {
-                removeTypingIndicator(typingId);
-                appendAiMsg("*(网络抖动，智库短暂延迟)*<br><br>不过基于目前掌握的信息，我们已针对您的核心业务输出了完整的分析简报。建议您核验邮箱，我们直接发送。");
-                
-                if (turnCount === 0) turnCount = 1; 
+            await fetchAIResponse(promptToSend, false);
+            
+            // 如果是逼单轮次，弹出留资表单
+            if (turnCount >= 2) {
                 setTimeout(() => {
                     document.getElementById('chat-input-wrapper').classList.add('view-hidden');
                     document.getElementById('lead-gen-wrapper').classList.remove('view-hidden');
                     if(extractedData.email) document.getElementById('email-input').value = extractedData.email;
+                    scrollToBottom();
                 }, 1000);
             }
         }
 
+        async function fetchAIResponse(userText, isFirst = false) {
+            if(!isFirst) chatHistory.push({ role: "user", parts: [{ text: userText }] });
+            
+            // 插入 AI 的思考/打字占位气泡
+            const msgId = 'ai-msg-' + Date.now();
+            appendAiBox(msgId);
+            const contentBox = document.getElementById(msgId);
+            contentBox.innerHTML = '<div class="typing-indicator flex gap-1 items-center h-5"><span></span><span></span><span></span></div>';
+            scrollToBottom();
+
+            try {
+                const res = await fetch(PROXY_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: chatHistory })
+                });
+                if (!res.ok) throw new Error("Net Err");
+                const data = await res.json();
+                let aiText = data.candidates[0].content.parts[0].text;
+                
+                chatHistory.push({ role: "model", parts: [{ text: aiText }] });
+                
+                // 解析文本和选项
+                let mainText = aiText;
+                let options = [];
+                const optionRegex = /选项\d:\s*(.*)/g;
+                let match;
+                while ((match = optionRegex.exec(aiText)) !== null) {
+                    options.push(match[1]);
+                }
+                // 从主文本中剔除选项部分
+                mainText = aiText.replace(/选项\d:\s*(.*)/g, "").trim();
+
+                // 启动打字机效果
+                await typeWriterEffect(contentBox, mainText);
+
+                // 如果有选项且还没到逼单轮次，渲染按钮
+                if (options.length > 0 && turnCount < 2) {
+                    const optWrapper = document.getElementById('options-wrapper');
+                    optWrapper.innerHTML = '';
+                    options.forEach(opt => {
+                        optWrapper.innerHTML += `<button onclick="sendOptionMessage('${opt}')" class="reply-option-btn truncate">${opt}</button>`;
+                    });
+                    optWrapper.classList.remove('view-hidden');
+                    scrollToBottom();
+                }
+
+            } catch (err) {
+                console.log(err);
+                contentBox.innerHTML = marked.parse("*(网络波动，连接中断)*<br>但您的核心诉求已接收。分析研报生成中...");
+                if (turnCount < 2) {
+                    turnCount = 2; // 强行逼单
+                    setTimeout(() => {
+                        document.getElementById('chat-input-wrapper').classList.add('view-hidden');
+                        document.getElementById('lead-gen-wrapper').classList.remove('view-hidden');
+                    }, 1000);
+                }
+            }
+        }
+
+        // 精致的打字机算法，支持 Markdown 实时渲染
+        async function typeWriterEffect(element, fullMarkdown) {
+            element.innerHTML = ''; // 清空 loading
+            element.classList.add('cursor-blink');
+            
+            // 按字符流输出
+            let currentText = "";
+            const chars = fullMarkdown.split('');
+            
+            for (let i = 0; i < chars.length; i++) {
+                currentText += chars[i];
+                // 使用 marked 渲染当前截断的文本
+                element.innerHTML = marked.parse(currentText);
+                scrollToBottom();
+                
+                // 根据标点符号控制打字节奏
+                let delay = 15;
+                if (['，', ',', '。', '.', '！', '!', '？', '?'].includes(chars[i])) delay = 150;
+                if (['\n'].includes(chars[i])) delay = 200;
+                
+                await new Promise(r => setTimeout(r, delay));
+            }
+            element.classList.remove('cursor-blink');
+            lucide.createIcons();
+        }
+
         function appendUserMsg(text) {
             const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML += `<div class="self-end max-w-[85%] fade-in mt-2"><div class="chat-user p-3.5 text-sm leading-relaxed">${text}</div></div>`;
+            chatBox.innerHTML += `<div class="self-end max-w-[85%] fade-in mt-2"><div class="chat-user p-3.5">${text}</div></div>`;
             scrollToBottom();
         }
 
-        function appendAiMsg(htmlText) {
+        function appendAiBox(id) {
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML += `
                 <div class="flex gap-3 max-w-[95%] fade-in mt-2">
                     <div class="w-7 h-7 rounded bg-white/10 flex items-center justify-center flex-shrink-0 mt-1 border border-white/20">
                         <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
                     </div>
-                    <div class="chat-ai p-3.5 text-sm text-gray-200 leading-relaxed markdown-body shadow-[0_5px_15px_rgba(0,0,0,0.5)]">${htmlText}</div>
+                    <div id="${id}" class="chat-ai p-4 markdown-body shadow-[0_5px_15px_rgba(0,0,0,0.5)] flex-grow"></div>
                 </div>
             `;
             lucide.createIcons();
             scrollToBottom();
-        }
-
-        function showTypingIndicator() {
-            const id = 'typing-' + Date.now();
-            const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML += `
-                <div id="${id}" class="flex gap-3 max-w-[80%] fade-in mt-2">
-                    <div class="w-7 h-7 rounded bg-white/10 flex items-center justify-center flex-shrink-0 mt-1 border border-white/20">
-                        <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
-                    </div>
-                    <div class="chat-ai p-3.5 text-sm flex items-center gap-1 h-12">
-                        <div class="typing-indicator flex gap-1 items-center justify-center"><span></span><span></span><span></span></div>
-                    </div>
-                </div>
-            `;
-            lucide.createIcons();
-            scrollToBottom();
-            return id;
-        }
-
-        function removeTypingIndicator(id) {
-            const el = document.getElementById(id);
-            if (el) el.remove();
         }
 
         function scrollToBottom() {
@@ -437,12 +559,21 @@
         }
 
         function submitLead() {
-            const finalEmail = document.getElementById('email-input').value.trim();
-            if(!finalEmail) return;
-
+            const email = document.getElementById('email-input').value.trim();
+            if(!email) return alert("请留下接收报告的邮箱");
             document.getElementById('step-2').classList.add('view-hidden');
             document.getElementById('step-3').classList.remove('view-hidden');
         }
+
+        // 打字机状态的loading动画
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .typing-indicator span { display: inline-block; width: 4px; height: 4px; background-color: #4ade80; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+            .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+            .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+            @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
