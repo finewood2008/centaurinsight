@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
+    <script>`n        // 多语言配置字典`n        const i18n = {`n            zh: {`n                headerSubtitle: "Deep AI Consultant",`n                title1: "战略级洞察<br><span class=\"font-semibold text-white\">属于少数派</span>",`n                desc1: "系统将为您生成专属商业分析报告并建立私域顾问档案。",`n                inputPlaceholder: "一句话描述您的核心业务 (如: 出海SaaS平台)",`n                btnScan: "扫描名片建立档案",`n                loadingTitle: "ESTABLISHING CONNECTION...",`n                logTarget: "TARGET ACQUIRED",`n                logName: "NAME",`n                logRole: "ROLE",`n                logCorp: "CORP",`n                logs: [`n                    "Initializing deep web crawler...",`n                    "Scanning industry database for {company}...",`n                    "Analyzing competitors data points...",`n                    "Cross-referencing {business} market trends...",`n                    "Extracting sentiment from recent news...",`n                    "Compiling strategic matrix..."`n                ],`n                chatPlaceholder: "手动输入补充信息...",`n                sysAlert: "[ SYSTEM ALERT ]",`n                leadTitle: "核心痛点已锁定，正在生成万字深度研报",`n                emailPlaceholder: "接收报告的邮箱地址",`n                wechatHint1: "添加专属人类顾问微信",`n                wechatHint2: "获取报告解密密码",`n                btnLead: "确认接收并建档",`n                successTitle: "研报生成中...",`n                successDesc: "您的专属商业分析报告已进入计算队列<br>请留意您的邮箱及微信通知。",`n                promptSys: "你是一名身价千万的顶尖AI商业战略顾问。\n客户公司：【{company}】\n客户身份：【{honorific}】\n核心业务：【{business}】\n\n要求：\n1. 第一轮回复：基于他的业务和公司，给出一份约300字的【深度市场破冰洞察】，必须犀利指出行业痛点，展现出极高的专业度。输出语言请使用简体中文。\n2. 格式要求：使用Markdown排版，重点加粗。\n3. 选项机制（核心）：在你的回复结尾，【必须】提供3个深入探讨的选项，用来引导用户。选项格式严格如下（每行一个，必须以\"选项X: \"开头）：\n选项1: [提问或探讨方向1]\n选项2: [提问或探讨方向2]\n选项3: [提问或探讨方向3]",`n                promptTurn: "(System Note: 请针对客户的回答进行犀利分析，并在结尾严格按照'选项1: ...'的格式给出3个追问选项。回复语言请使用简体中文。)",`n                promptEnd: "(System Note: 客户已经透露核心痛点。此次回复不要再给选项。请简短回复一句：'我已经锁定了您业务的致命卡点与增长杠杆，系统正在为您生成万字深度研报。请查收。' 回复语言请使用简体中文。)"`n            },`n            tw: {`n                headerSubtitle: "Deep AI Consultant",`n                title1: "戰略級洞察<br><span class=\"font-semibold text-white\">屬於少數派</span>",`n                desc1: "系統將為您生成專屬商業分析報告並建立私域顧問檔案。",`n                inputPlaceholder: "一句話描述您的核心業務 (如: 出海SaaS平台)",`n                btnScan: "掃描名片建立檔案",`n                loadingTitle: "ESTABLISHING CONNECTION...",`n                logTarget: "TARGET ACQUIRED",`n                logName: "NAME",`n                logRole: "ROLE",`n                logCorp: "CORP",`n                logs: [`n                    "Initializing deep web crawler...",`n                    "Scanning industry database for {company}...",`n                    "Analyzing competitors data points...",`n                    "Cross-referencing {business} market trends...",`n                    "Extracting sentiment from recent news...",`n                    "Compiling strategic matrix..."`n                ],`n                chatPlaceholder: "手動輸入補充資訊...",`n                sysAlert: "[ SYSTEM ALERT ]",`n                leadTitle: "核心痛點已鎖定，正在生成萬字深度研報",`n                emailPlaceholder: "接收報告的電子郵件",`n                wechatHint1: "添加專屬人類顧問微信",`n                wechatHint2: "獲取報告解密密碼",`n                btnLead: "確認接收並建檔",`n                successTitle: "研報生成中...",`n                successDesc: "您的專屬商業分析報告已進入計算隊列<br>請留意您的郵箱及微信通知。",`n                promptSys: "你是一名身價千萬的頂尖AI商業戰略顧問。\n客戶公司：【{company}】\n客戶身份：【{honorific}】\n核心業務：【{business}】\n\n要求：\n1. 第一輪回覆：基於他的業務和公司，給出一份約300字的【深度市場破冰洞察】，必須犀利指出行業痛點，展現出極高的專業度。輸出語言請嚴格使用繁體中文（台灣）。\n2. 格式要求：使用Markdown排版，重點加粗。\n3. 選項機制（核心）：在你的回覆結尾，【必須】提供3個深入探討的選項，用來引導用戶。選項格式嚴格如下（每行一個，必須以\"選項X: \"開頭）：\n選項1: [提問或探討方向1]\n選項2: [提問或探討方向2]\n選項3: [提問或探討方向3]",`n                promptTurn: "(System Note: 請針對客戶的回答進行犀利分析，並在結尾嚴格按照'選項1: ...'的格式給出3個追問選項。回覆語言請嚴格使用繁體中文。)",`n                promptEnd: "(System Note: 客戶已經透露核心痛點。此次回覆不要再給選項。請簡短回覆一句：'我已經鎖定了您業務的致命卡點與增長槓桿，系統正在為您生成萬字深度研報。請查收。' 回覆語言請嚴格使用繁體中文。)"`n            },`n            en: {`n                headerSubtitle: "Deep AI Consultant",`n                title1: "Strategic Insights<br><span class=\"font-semibold text-white\">For the Elite</span>",`n                desc1: "We will generate an exclusive business analysis report and establish your private advisor profile.",`n                inputPlaceholder: "Describe your core business in one sentence (e.g. B2B SaaS)",`n                btnScan: "Scan Business Card",`n                loadingTitle: "ESTABLISHING CONNECTION...",`n                logTarget: "TARGET ACQUIRED",`n                logName: "NAME",`n                logRole: "ROLE",`n                logCorp: "CORP",`n                logs: [`n                    "Initializing deep web crawler...",`n                    "Scanning industry database for {company}...",`n                    "Analyzing competitors data points...",`n                    "Cross-referencing {business} market trends...",`n                    "Extracting sentiment from recent news...",`n                    "Compiling strategic matrix..."`n                ],`n                chatPlaceholder: "Type additional info manually...",`n                sysAlert: "[ SYSTEM ALERT ]",`n                leadTitle: "Core pain points locked. Generating in-depth report.",`n                emailPlaceholder: "Email address to receive report",`n                wechatHint1: "Add your human consultant on WeChat",`n                wechatHint2: "To get the report decryption password",`n                btnLead: "Confirm & Receive",`n                successTitle: "Generating Report...",`n                successDesc: "Your exclusive business analysis report is in the queue.<br>Please check your email and WeChat.",`n                promptSys: "You are a top-tier AI business strategy consultant worth millions.\nClient Company: [{company}]\nClient Identity: [{honorific}]\nCore Business: [{business}]\n\nRequirements:\n1. First response: Based on their business and company, provide a ~300-word [Deep Market Insight], sharply pointing out industry pain points and demonstrating extreme professionalism. Output language must be English.\n2. Formatting: Use Markdown with bold emphasis on key points.\n3. Option Mechanism (Core): At the end of your response, you MUST provide 3 options for further exploration to guide the user. The format must strictly follow this (one per line, starting with \"Option X: \"):\nOption 1: [Direction 1]\nOption 2: [Direction 2]\nOption 3: [Direction 3]",`n                promptTurn: "(System Note: Analyze the client's response sharply and provide 3 follow-up options at the end strictly in the format 'Option 1: ...'. Output language must be English.)",`n                promptEnd: "(System Note: The client has revealed the core pain point. Do not provide options this time. Simply reply briefly: 'I have locked onto the critical bottlenecks and growth levers of your business. The system is generating a comprehensive in-depth report for you. Please check your inbox.' Output language must be English.)"`n            }`n        };`n`n        let currentLang = 'zh';`n`n        function setLang(lang) {`n            currentLang = lang;`n            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));`n            event.target.classList.add('active');`n            updateUI();`n        }`n`n        function updateUI() {`n            const t = i18n[currentLang*/`n            // Update static elements`n            document.querySelector('header p').innerHTML = t.headerSubtitle;`n            document.querySelector('#step-1 h2').innerHTML = t.title1;`n            document.querySelector('#step-1 p').innerHTML = t.desc1;`n            document.getElementById('init-product').placeholder = t.inputPlaceholder;`n            document.querySelector('#btn-card span').innerHTML = t.btnScan;`n            `n            document.querySelector('#step-loading h3').innerHTML = t.loadingTitle;`n            document.querySelector('#card-result-box p').innerHTML = t.logTarget;`n            document.querySelector('#card-result-box p:nth-child(3) span:first-child').innerHTML = t.logName + ': ';`n            document.querySelector('#card-result-box p:nth-child(4) span:first-child').innerHTML = t.logRole + ': ';`n            document.querySelector('#card-result-box p:nth-child(5) span:first-child').innerHTML = t.logCorp + ': ';`n`n            document.getElementById('chat-input').placeholder = t.chatPlaceholder;`n            document.querySelector('#lead-gen-wrapper p:nth-child(2)').innerHTML = t.sysAlert;`n            document.querySelector('#lead-gen-wrapper p:nth-child(3)').innerHTML = t.leadTitle;`n            document.getElementById('email-input').placeholder = t.emailPlaceholder;`n            document.querySelector('#lead-gen-wrapper .flex-grow p:nth-child(1)').innerHTML = t.wechatHint1;`n            document.querySelector('#lead-gen-wrapper .flex-grow p:nth-child(2)').innerHTML = t.wechatHint2;`n            document.querySelector('#lead-gen-wrapper button').innerHTML = t.btnLead;`n`n            document.querySelector('#step-3 h2').innerHTML = t.successTitle;`n            document.querySelector('#step-3 p').innerHTML = t.successDesc;`n        } // End updateUI`n
         tailwind.config = {
             theme: {
                 extend: {
@@ -136,12 +136,16 @@
             cursor: pointer;
         }
         .reply-option-btn:hover { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.3); color: #4ade80; }
-    </style>
+            /* 语言切换器样式 */
+        .lang-switch { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 60; display: flex; gap: 0.5rem; }
+        .lang-btn { font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; color: rgba(255,255,255,0.4); background: transparent; border: 1px solid rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; }
+        .lang-btn.active { color: #4ade80; border-color: #4ade80; background: rgba(74,222,128,0.1); }
+</style>
 </head>
 <body class="min-h-screen flex flex-col relative w-full max-w-md mx-auto">
 
     <!-- Header -->
-    <header class="p-6 flex flex-col items-center justify-center shrink-0 z-50 bg-dark/90 backdrop-blur-md border-b border-white/5 relative">
+    <div class="lang-switch">`n        <button class="lang-btn active" onclick="setLang('zh')">简</button>`n        <button class="lang-btn" onclick="setLang('tw')">繁</button>`n        <button class="lang-btn" onclick="setLang('en')">EN</button>`n    </div>`n`n    <!-- Header -->`n    <header class="p-6 flex flex-col items-center justify-center shrink-0 z-50 bg-dark/90 backdrop-blur-md border-b border-white/5 relative">
         <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
             <i data-lucide="layers" class="w-6 h-6 text-black"></i>
         </div>
@@ -263,24 +267,24 @@
         </div>
     </div>
 
-    <script>
-        lucide.createIcons();
+    <script>`n        // 多语言配置字典`n        const i18n = {`n            zh: {`n                headerSubtitle: "Deep AI Consultant",`n                title1: "战略级洞察<br><span class=\"font-semibold text-white\">属于少数派</span>",`n                desc1: "系统将为您生成专属商业分析报告并建立私域顾问档案。",`n                inputPlaceholder: "一句话描述您的核心业务 (如: 出海SaaS平台)",`n                btnScan: "扫描名片建立档案",`n                loadingTitle: "ESTABLISHING CONNECTION...",`n                logTarget: "TARGET ACQUIRED",`n                logName: "NAME",`n                logRole: "ROLE",`n                logCorp: "CORP",`n                logs: [`n                    "Initializing deep web crawler...",`n                    "Scanning industry database for {company}...",`n                    "Analyzing competitors data points...",`n                    "Cross-referencing {business} market trends...",`n                    "Extracting sentiment from recent news...",`n                    "Compiling strategic matrix..."`n                ],`n                chatPlaceholder: "手动输入补充信息...",`n                sysAlert: "[ SYSTEM ALERT ]",`n                leadTitle: "核心痛点已锁定，正在生成万字深度研报",`n                emailPlaceholder: "接收报告的邮箱地址",`n                wechatHint1: "添加专属人类顾问微信",`n                wechatHint2: "获取报告解密密码",`n                btnLead: "确认接收并建档",`n                successTitle: "研报生成中...",`n                successDesc: "您的专属商业分析报告已进入计算队列<br>请留意您的邮箱及微信通知。",`n                promptSys: "你是一名身价千万的顶尖AI商业战略顾问。\n客户公司：【{company}】\n客户身份：【{honorific}】\n核心业务：【{business}】\n\n要求：\n1. 第一轮回复：基于他的业务和公司，给出一份约300字的【深度市场破冰洞察】，必须犀利指出行业痛点，展现出极高的专业度。输出语言请使用简体中文。\n2. 格式要求：使用Markdown排版，重点加粗。\n3. 选项机制（核心）：在你的回复结尾，【必须】提供3个深入探讨的选项，用来引导用户。选项格式严格如下（每行一个，必须以\"选项X: \"开头）：\n选项1: [提问或探讨方向1]\n选项2: [提问或探讨方向2]\n选项3: [提问或探讨方向3]",`n                promptTurn: "(System Note: 请针对客户的回答进行犀利分析，并在结尾严格按照'选项1: ...'的格式给出3个追问选项。回复语言请使用简体中文。)",`n                promptEnd: "(System Note: 客户已经透露核心痛点。此次回复不要再给选项。请简短回复一句：'我已经锁定了您业务的致命卡点与增长杠杆，系统正在为您生成万字深度研报。请查收。' 回复语言请使用简体中文。)"`n            },`n            tw: {`n                headerSubtitle: "Deep AI Consultant",`n                title1: "戰略級洞察<br><span class=\"font-semibold text-white\">屬於少數派</span>",`n                desc1: "系統將為您生成專屬商業分析報告並建立私域顧問檔案。",`n                inputPlaceholder: "一句話描述您的核心業務 (如: 出海SaaS平台)",`n                btnScan: "掃描名片建立檔案",`n                loadingTitle: "ESTABLISHING CONNECTION...",`n                logTarget: "TARGET ACQUIRED",`n                logName: "NAME",`n                logRole: "ROLE",`n                logCorp: "CORP",`n                logs: [`n                    "Initializing deep web crawler...",`n                    "Scanning industry database for {company}...",`n                    "Analyzing competitors data points...",`n                    "Cross-referencing {business} market trends...",`n                    "Extracting sentiment from recent news...",`n                    "Compiling strategic matrix..."`n                ],`n                chatPlaceholder: "手動輸入補充資訊...",`n                sysAlert: "[ SYSTEM ALERT ]",`n                leadTitle: "核心痛點已鎖定，正在生成萬字深度研報",`n                emailPlaceholder: "接收報告的電子郵件",`n                wechatHint1: "添加專屬人類顧問微信",`n                wechatHint2: "獲取報告解密密碼",`n                btnLead: "確認接收並建檔",`n                successTitle: "研報生成中...",`n                successDesc: "您的專屬商業分析報告已進入計算隊列<br>請留意您的郵箱及微信通知。",`n                promptSys: "你是一名身價千萬的頂尖AI商業戰略顧問。\n客戶公司：【{company}】\n客戶身份：【{honorific}】\n核心業務：【{business}】\n\n要求：\n1. 第一輪回覆：基於他的業務和公司，給出一份約300字的【深度市場破冰洞察】，必須犀利指出行業痛點，展現出極高的專業度。輸出語言請嚴格使用繁體中文（台灣）。\n2. 格式要求：使用Markdown排版，重點加粗。\n3. 選項機制（核心）：在你的回覆結尾，【必須】提供3個深入探討的選項，用來引導用戶。選項格式嚴格如下（每行一個，必須以\"選項X: \"開頭）：\n選項1: [提問或探討方向1]\n選項2: [提問或探討方向2]\n選項3: [提問或探討方向3]",`n                promptTurn: "(System Note: 請針對客戶的回答進行犀利分析，並在結尾嚴格按照'選項1: ...'的格式給出3個追問選項。回覆語言請嚴格使用繁體中文。)",`n                promptEnd: "(System Note: 客戶已經透露核心痛點。此次回覆不要再給選項。請簡短回覆一句：'我已經鎖定了您業務的致命卡點與增長槓桿，系統正在為您生成萬字深度研報。請查收。' 回覆語言請嚴格使用繁體中文。)"`n            },`n            en: {`n                headerSubtitle: "Deep AI Consultant",`n                title1: "Strategic Insights<br><span class=\"font-semibold text-white\">For the Elite</span>",`n                desc1: "We will generate an exclusive business analysis report and establish your private advisor profile.",`n                inputPlaceholder: "Describe your core business in one sentence (e.g. B2B SaaS)",`n                btnScan: "Scan Business Card",`n                loadingTitle: "ESTABLISHING CONNECTION...",`n                logTarget: "TARGET ACQUIRED",`n                logName: "NAME",`n                logRole: "ROLE",`n                logCorp: "CORP",`n                logs: [`n                    "Initializing deep web crawler...",`n                    "Scanning industry database for {company}...",`n                    "Analyzing competitors data points...",`n                    "Cross-referencing {business} market trends...",`n                    "Extracting sentiment from recent news...",`n                    "Compiling strategic matrix..."`n                ],`n                chatPlaceholder: "Type additional info manually...",`n                sysAlert: "[ SYSTEM ALERT ]",`n                leadTitle: "Core pain points locked. Generating in-depth report.",`n                emailPlaceholder: "Email address to receive report",`n                wechatHint1: "Add your human consultant on WeChat",`n                wechatHint2: "To get the report decryption password",`n                btnLead: "Confirm & Receive",`n                successTitle: "Generating Report...",`n                successDesc: "Your exclusive business analysis report is in the queue.<br>Please check your email and WeChat.",`n                promptSys: "You are a top-tier AI business strategy consultant worth millions.\nClient Company: [{company}]\nClient Identity: [{honorific}]\nCore Business: [{business}]\n\nRequirements:\n1. First response: Based on their business and company, provide a ~300-word [Deep Market Insight], sharply pointing out industry pain points and demonstrating extreme professionalism. Output language must be English.\n2. Formatting: Use Markdown with bold emphasis on key points.\n3. Option Mechanism (Core): At the end of your response, you MUST provide 3 options for further exploration to guide the user. The format must strictly follow this (one per line, starting with \"Option X: \"):\nOption 1: [Direction 1]\nOption 2: [Direction 2]\nOption 3: [Direction 3]",`n                promptTurn: "(System Note: Analyze the client's response sharply and provide 3 follow-up options at the end strictly in the format 'Option 1: ...'. Output language must be English.)",`n                promptEnd: "(System Note: The client has revealed the core pain point. Do not provide options this time. Simply reply briefly: 'I have locked onto the critical bottlenecks and growth levers of your business. The system is generating a comprehensive in-depth report for you. Please check your inbox.' Output language must be English.)"`n            }`n        };`n`n        let currentLang = 'zh';`n`n        function setLang(lang) {`n            currentLang = lang;`n            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));`n            event.target.classList.add('active');`n            updateUI();`n        }`n`n        function updateUI() {`n            const t = i18n[currentLang*/`n            // Update static elements`n            document.querySelector('header p').innerHTML = t.headerSubtitle;`n            document.querySelector('#step-1 h2').innerHTML = t.title1;`n            document.querySelector('#step-1 p').innerHTML = t.desc1;`n            document.getElementById('init-product').placeholder = t.inputPlaceholder;`n            document.querySelector('#btn-card span').innerHTML = t.btnScan;`n            `n            document.querySelector('#step-loading h3').innerHTML = t.loadingTitle;`n            document.querySelector('#card-result-box p').innerHTML = t.logTarget;`n            document.querySelector('#card-result-box p:nth-child(3) span:first-child').innerHTML = t.logName + ': ';`n            document.querySelector('#card-result-box p:nth-child(4) span:first-child').innerHTML = t.logRole + ': ';`n            document.querySelector('#card-result-box p:nth-child(5) span:first-child').innerHTML = t.logCorp + ': ';`n`n            document.getElementById('chat-input').placeholder = t.chatPlaceholder;`n            document.querySelector('#lead-gen-wrapper p:nth-child(2)').innerHTML = t.sysAlert;`n            document.querySelector('#lead-gen-wrapper p:nth-child(3)').innerHTML = t.leadTitle;`n            document.getElementById('email-input').placeholder = t.emailPlaceholder;`n            document.querySelector('#lead-gen-wrapper .flex-grow p:nth-child(1)').innerHTML = t.wechatHint1;`n            document.querySelector('#lead-gen-wrapper .flex-grow p:nth-child(2)').innerHTML = t.wechatHint2;`n            document.querySelector('#lead-gen-wrapper button').innerHTML = t.btnLead;`n`n            document.querySelector('#step-3 h2').innerHTML = t.successTitle;`n            document.querySelector('#step-3 p').innerHTML = t.successDesc;`n        } // End updateUI`n
+        lucide.createIcons();`n        updateUI(); // Initialize UI language
         const PROXY_URL = "https://gemini-proxy.finewood2008.workers.dev";
         
         let extractedData = { name: "贵宾", title: "负责人", company: "贵司", email: "" };
         let businessDesc = "";
-        let chatHistory = [];
+        let chatHistory = [*/
         let turnCount = 0; 
 
-        // 假装搜索的日志数组
-        const searchLogs = [
+        
+        /*
             "Initializing deep web crawler...",
             "Scanning industry database for {company}...",
             "Analyzing competitors data points...",
             "Cross-referencing {business} market trends...",
             "Extracting sentiment from recent news...",
             "Compiling strategic matrix..."
-        ];
+        */
 
         function checkInitInput() {
             const val = document.getElementById('init-product').value.trim();
@@ -318,7 +322,7 @@
                 document.getElementById('step-loading').classList.remove('view-hidden');
 
                 try {
-                    const file = fileInput.files[0];
+                    const file = fileInput.files[0*/
                     const base64Data = await compressImage(file);
                     await extractCardInfo(base64Data);
                 } catch (e) {
@@ -340,7 +344,7 @@
                 const data = await res.json();
                 let aiText = data.candidates[0].content.parts[0].text.replace(/```json/g, "").replace(/```/g, "").trim();
                 const parsed = JSON.parse(aiText);
-                if (parsed.name) extractedData.name = parsed.name.split(' ')[0]; 
+                if (parsed.name) extractedData.name = parsed.name.split(' ')[0*/ 
                 if (parsed.title) extractedData.title = parsed.title;
                 if (parsed.company) extractedData.company = parsed.company;
                 if (parsed.email) extractedData.email = parsed.email;
@@ -359,9 +363,9 @@
             const logContainer = document.getElementById('search-logs');
             
             // 2. 逐行输出搜索日志
-            for (let i = 0; i < searchLogs.length; i++) {
+            const currentSearchLogs = i18n[currentLang].logs;`n            for (let i = 0; i < currentSearchLogs.length; i++) {
                 await new Promise(r => setTimeout(r, 600)); // 间隔 0.6s
-                const text = searchLogs[i].replace('{company}', extractedData.company).replace('{business}', businessDesc);
+                const text = currentSearchLogs[i].replace('{company}', extractedData.company).replace('{business}', businessDesc);
                 logContainer.innerHTML += `<div class="log-line fade-in">> ${text}</div>`;
             }
             
@@ -377,7 +381,7 @@
             const honorific = isKnown && extractedData.name !== "贵宾" ? `**${extractedData.name}** ${extractedData.title}` : `贵宾`;
 
             // 严密的 SYSTEM PROMPT：强制输出报告 + 3个选项
-            const SYSTEM_PROMPT = `你是一名身价千万的顶尖AI商业战略顾问。
+            const SYSTEM_PROMPT = i18n[currentLang].promptSys.replace('{company}', extractedData.company).replace('{honorific}', honorific).replace('{business}', businessDesc); /*
 客户公司：【${extractedData.company}】
 客户身份：【${honorific}】
 核心业务：【${businessDesc}】
@@ -388,9 +392,9 @@
 3. 选项机制（核心）：在你的回复结尾，【必须】提供3个深入探讨的选项，用来引导用户。选项格式严格如下（每行一个，必须以"选项X: "开头）：
 选项1: [提问或探讨方向1]
 选项2: [提问或探讨方向2]
-选项3: [提问或探讨方向3]`;
+*/
 
-            chatHistory = [{ role: "user", parts: [{ text: SYSTEM_PROMPT }] }];
+            chatHistory = [{ role: "user", parts: [{ text: SYSTEM_PROMPT }] }*/
             fetchAIResponse(SYSTEM_PROMPT, true); // 第一次静默发送并获取惊艳开场
         }
 
@@ -429,9 +433,9 @@
 
             // 第3轮，强制截断并逼单
             if (turnCount >= 2) {
-                promptToSend += "\n\n(System Note: 客户已经透露核心痛点。此次回复不要再给选项。请简短回复一句：'我已经锁定了您业务的致命卡点与增长杠杆，系统正在为您生成万字深度研报。请查收。')";
+                promptToSend += "\n\n" + i18n[currentLang].promptEnd;
             } else {
-                promptToSend += "\n\n(System Note: 请针对客户的回答进行犀利分析，并在结尾严格按照'选项1: ...'的格式给出3个追问选项。)";
+                promptToSend += "\n\n" + i18n[currentLang].promptTurn;
             }
 
             await fetchAIResponse(promptToSend, false);
@@ -471,14 +475,14 @@
                 
                 // 解析文本和选项
                 let mainText = aiText;
-                let options = [];
-                const optionRegex = /选项\d:\s*(.*)/g;
+                let options = [*/
+                const optionRegex = new RegExp(pfx + "\\\\d:\\\\s*(.*)", "g");
                 let match;
                 while ((match = optionRegex.exec(aiText)) !== null) {
                     options.push(match[1]);
                 }
                 // 从主文本中剔除选项部分
-                mainText = aiText.replace(/选项\d:\s*(.*)/g, "").trim();
+                mainText = aiText.replace(new RegExp(pfx + "\\\\d:\\\\s*(.*)", "g"), "").trim();
 
                 // 启动打字机效果
                 await typeWriterEffect(contentBox, mainText);
@@ -517,7 +521,7 @@
             const chars = fullMarkdown.split('');
             
             for (let i = 0; i < chars.length; i++) {
-                currentText += chars[i];
+                currentText += chars[i*/
                 // 使用 marked 渲染当前截断的文本
                 element.innerHTML = marked.parse(currentText);
                 scrollToBottom();
@@ -530,7 +534,7 @@
                 await new Promise(r => setTimeout(r, delay));
             }
             element.classList.remove('cursor-blink');
-            lucide.createIcons();
+            lucide.createIcons();`n        updateUI(); // Initialize UI language
         }
 
         function appendUserMsg(text) {
@@ -549,7 +553,7 @@
                     <div id="${id}" class="chat-ai p-4 markdown-body shadow-[0_5px_15px_rgba(0,0,0,0.5)] flex-grow"></div>
                 </div>
             `;
-            lucide.createIcons();
+            lucide.createIcons();`n        updateUI(); // Initialize UI language
             scrollToBottom();
         }
 
@@ -577,3 +581,11 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
