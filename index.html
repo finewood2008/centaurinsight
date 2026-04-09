@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Centaur Insight | 专属战略推演 (AI 驱动)</title>
+    <title>Centaur Insight | 私行级 AI 商业顾问</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -39,18 +39,21 @@
             border-radius: 1.25rem;
         }
 
+        .camera-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .camera-btn:active { transform: scale(0.98); }
+
         .btn-glow {
             background: #ffffff;
             color: #000000;
             transition: all 0.3s ease;
         }
-        .btn-glow:disabled {
-            background: rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.5);
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
+        
         .view-hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn {
@@ -84,12 +87,24 @@
             40% { transform: scale(1); }
         }
 
+        .radar-box {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .radar-box::before {
+            content: ''; position: absolute; inset: 0;
+            background: conic-gradient(transparent 70%, rgba(74, 222, 128, 0.8) 100%);
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
         /* Markdown 样式 */
         .markdown-body strong { color: #4ade80; font-weight: 600; }
         .markdown-body p { margin-bottom: 0.5rem; }
         .markdown-body p:last-child { margin-bottom: 0; }
-        .markdown-body ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.5rem; }
-        
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
@@ -106,56 +121,55 @@
         <p class="text-[10px] text-accent tracking-widest font-mono opacity-80 uppercase mt-1">Deep AI Consultant</p>
     </header>
 
-    <!-- 步骤 1：输入产品钩子 -->
+    <!-- 步骤 1：扫描名片入场 -->
     <main id="step-1" class="flex-grow px-6 flex flex-col justify-center fade-in z-10 pb-20">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-light mb-3 leading-tight">输入核心产品<br><span class="font-semibold text-white">开启深度洞察</span></h2>
-            <p class="text-sm text-gray-400">我们将调用顶尖商业模型为您进行实时诊断</p>
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-light mb-3 leading-tight">拍摄名片<br><span class="font-semibold text-white">开启专属商业推演</span></h2>
+            <p class="text-sm text-gray-400">系统将自动提取企业档案，极速连线顾问</p>
         </div>
 
         <div class="space-y-6 w-full">
-            <div class="relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-accent/20 to-white/10 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-500"></div>
-                <input type="text" id="init-product" 
-                       class="relative w-full bg-dark border border-white/20 text-white rounded-xl px-5 py-4 text-base focus:border-accent outline-none placeholder-gray-500 shadow-inner"
-                       placeholder="例如：户外电源 / 智能手表 / 注塑机"
-                       oninput="checkInitInput()">
-            </div>
+            <input type="file" id="cam-card" accept="image/*" capture="environment" onchange="handleCapture()" style="display: none;">
             
-            <button id="btn-start" disabled onclick="startConsultation()" 
-                    class="btn-glow w-full rounded-xl py-4 font-semibold tracking-wide text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                <i data-lucide="zap" class="w-4 h-4"></i>
-                连线 AI 战略顾问
+            <button type="button" onclick="document.getElementById('cam-card').click()" id="btn-card"
+                    class="camera-btn w-full h-40 rounded-2xl flex flex-col items-center justify-center gap-4 group">
+                <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition">
+                    <i data-lucide="scan-face" class="w-8 h-8 text-accent"></i>
+                </div>
+                <span class="text-sm text-gray-300 font-medium tracking-wide">点击拍摄名片或上传相册</span>
             </button>
         </div>
     </main>
 
+    <!-- 步骤 1.5：识别过渡页 -->
+    <main id="step-loading" class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-dark/90 backdrop-blur view-hidden">
+        <div class="radar-box mb-8 shadow-[0_0_30px_rgba(74,222,128,0.2)]"></div>
+        <h3 class="text-lg font-medium mb-2 tracking-widest text-accent font-mono">档案解析中...</h3>
+        <p class="text-xs text-gray-400 font-mono text-center">压缩上传完成，正在提炼企业核心特征</p>
+    </main>
+
     <!-- 步骤 2：互动推演界面 -->
     <main id="step-2" class="absolute inset-0 top-[110px] z-20 flex flex-col bg-dark view-hidden">
-        <!-- 聊天区域 -->
-        <div id="chat-box" class="flex-grow p-5 overflow-y-auto flex flex-col gap-5 pb-28 custom-scrollbar">
-            <!-- 动态消息会插入这里 -->
-        </div>
+        <div id="chat-box" class="flex-grow p-5 overflow-y-auto flex flex-col gap-5 pb-28 custom-scrollbar"></div>
 
-        <!-- 底部输入区域 -->
         <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-dark via-dark to-transparent z-30">
             <div id="chat-input-wrapper" class="glass-card flex items-end gap-2 p-2 relative fade-in">
                 <textarea id="chat-input" rows="1" 
                           class="w-full bg-transparent text-sm text-white px-3 py-2 outline-none resize-none max-h-24 custom-scrollbar placeholder-gray-500" 
-                          placeholder="输入您的回答或痛点..."
+                          placeholder="描述您的业务痛点..."
                           oninput="autoResize(this)"></textarea>
                 <button onclick="sendMessage()" id="btn-send" class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0 hover:bg-accent/20 transition-colors">
                     <i data-lucide="arrow-up" class="w-5 h-5 text-accent"></i>
                 </button>
             </div>
 
-            <!-- 收网留资表单 (默认隐藏) -->
+            <!-- 收网留资表单 (预填邮箱) -->
             <div id="lead-gen-wrapper" class="glass-card p-4 view-hidden fade-in border-accent/30 shadow-[0_0_30px_rgba(74,222,128,0.1)]">
-                <p class="text-xs text-accent font-mono mb-3 text-center">◆ 完整战略报告已生成，请输入邮箱接收 ◆</p>
+                <p class="text-xs text-accent font-mono mb-3 text-center">◆ 完整战略报告已生成，请确认接收邮箱 ◆</p>
                 <div class="flex gap-2">
                     <input type="email" id="email-input" class="flex-grow bg-white/5 border border-white/20 text-white text-sm rounded-lg px-3 py-2.5 outline-none focus:border-accent" placeholder="您的企业邮箱">
                     <button onclick="submitLead()" class="px-5 rounded-lg bg-accent text-black font-semibold text-sm hover:bg-green-300">
-                        接收报告
+                        确定接收
                     </button>
                 </div>
             </div>
@@ -171,12 +185,12 @@
                     <i data-lucide="send" class="w-8 h-8 text-accent ml-1"></i>
                 </div>
             </div>
-            <h2 class="text-2xl font-light mb-3">报告已投递</h2>
+            <h2 class="text-2xl font-light mb-3">研报投递中</h2>
             <p class="text-gray-400 text-sm leading-relaxed mb-8">
-                高级战略研究员将在深度校验后<br>将报告发送至您的邮箱。
+                高级战略研究员将在二次核验后<br>将定制报告发送至您的邮箱。
             </p>
             <button onclick="location.reload()" class="text-xs text-gray-500 tracking-widest font-mono uppercase hover:text-white transition-colors">
-                [ 返回首页 ]
+                [ 返回首页迎接下一位访客 ]
             </button>
         </div>
     </div>
@@ -185,61 +199,116 @@
         lucide.createIcons();
 
         const PROXY_URL = "https://gemini-proxy.finewood2008.workers.dev";
-        let productName = "";
-        let turnCount = 0; // 记录对话轮数，用于触发留资
+        
+        let extractedData = { name: "贵宾", title: "负责人", company: "贵公司", email: "", industry: "未知赛道" };
+        let chatHistory = [];
+        let turnCount = 0; 
 
-        // 大模型的高级人设
-        const SYSTEM_PROMPT = `你是一个名为 Centaur Insight 的全球顶尖商业战略顾问 AI（说话风格类似麦肯锡资深合伙人）。你目前正在一个高端行业展会现场与潜在B端客户对话。
+        // 极限压缩算法：限制宽600px，压缩率0.6，确保图片在50KB内，弱网也能秒传
+        function compressImage(file, maxWidth = 600) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxWidth) {
+                            height = Math.round(height * maxWidth / width);
+                            width = maxWidth;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                        resolve(dataUrl.split(',')[1]); // return base64 part
+                    };
+                    img.onerror = reject;
+                };
+            });
+        }
 
-你的终极目标是：通过短短 2-3 轮极具深度的对话，用专业度和行业洞察给客户带来“Wow Moment”（震撼感），并最终引诱客户留下邮箱以获取你为其“定制的深度报告”。
+        async function handleCapture() {
+            const fileInput = document.getElementById('cam-card');
+            if(fileInput.files && fileInput.files[0]) {
+                document.getElementById('step-1').classList.add('view-hidden');
+                document.getElementById('step-loading').classList.remove('view-hidden');
 
-【核心沟通原则】：
-1. 绝对犀利，一针见血。拒绝任何泛泛而谈的废话、“正确的废话”和AI味道浓重的套话（如“这是一个很好的问题”）。
-2. 使用高度专业的商业词汇（视用户产品而定，如：出海溢价、同质化内卷、第二增长曲线、LTV、供应链护城河、B端采购决策链等）。
-3. 字数严格克制：每次回复必须在 100-150 字以内（非常重要，因为是手机端阅读）。
-4. 排版精美：多用短句，关键点用加粗，无需列过多的列表。
-
-【对话剧本（严格执行）】：
-- 用户的第一次输入会是他们的产品或行业。
-- 你的第一次回复（Round 1）：针对该产品立刻抛出一个极其犀利、可能带有“逆向思维”的市场洞察（说明这个赛道现在有多惨烈或有什么隐秘机会），然后**立刻反问一个直击灵魂的业务痛点问题**（例如：你们现在是靠价格战苟延残喘，还是在谋求品牌溢价？）。
-- 你的第二次回复（Round 2）：根据用户的回答，给出一个**极具含金量、让人眼前一亮的破局思路或者实操方向**（Wow Moment）。然后，**立即停止免费建议，开始收网**。
-- 收网话术示例：“现场演示时间有限。我已经基于你的痛点，系统性地生成了一份《[该行业]北美/全球大客户精准破局战略》15页深度报告及实操清单。请留下您的企业邮箱，我会立刻发送给您。”
-`;
-
-        let chatHistory = [
-            {
-                role: "user",
-                parts: [{ text: SYSTEM_PROMPT }]
-            },
-            {
-                role: "model",
-                parts: [{ text: "收到。我将严格扮演顶尖商业顾问，通过犀利洞察和简短有力的反问掌控对话节奏，并在第二轮互动后引导用户留下邮箱提取报告。" }]
+                try {
+                    const file = fileInput.files[0];
+                    const base64Data = await compressImage(file);
+                    await extractCardInfo(base64Data);
+                } catch (e) {
+                    console.error("压缩或识别失败", e);
+                    // 容错处理：即使识别失败也进入对话
+                    startChat(); 
+                }
             }
-        ];
+        }
 
-        function checkInitInput() {
-            const val = document.getElementById('init-product').value.trim();
-            const btn = document.getElementById('btn-start');
-            btn.disabled = val.length === 0;
+        async function extractCardInfo(base64Data) {
+            const requestBody = {
+                contents: [{
+                    parts: [
+                        { text: "请精准提取这张名片的信息，必须严格返回以下JSON格式（不要加任何代码块修饰符，纯JSON字符串）：{\"name\": \"姓名或留空\", \"title\": \"职位或负责人\", \"company\": \"公司全称或留空\", \"email\": \"邮箱或留空\", \"industry\": \"根据公司名称和业务推测的所属行业/赛道\"}" },
+                        { inlineData: { mimeType: 'image/jpeg', data: base64Data } }
+                    ]
+                }]
+            };
+
+            try {
+                const response = await fetch(PROXY_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+                const data = await response.json();
+                let aiText = data.candidates[0].content.parts[0].text;
+                aiText = aiText.replace(/```json/g, "").replace(/```/g, "").trim();
+                const parsed = JSON.parse(aiText);
+                
+                if (parsed.name) extractedData.name = parsed.name.split(' ')[0]; // 拿个姓氏或短名
+                if (parsed.title) extractedData.title = parsed.title;
+                if (parsed.company) extractedData.company = parsed.company;
+                if (parsed.email) extractedData.email = parsed.email;
+                if (parsed.industry) extractedData.industry = parsed.industry;
+
+                startChat();
+            } catch (err) {
+                console.error("提取失败", err);
+                startChat(); // Fallback
+            }
+        }
+
+        function startChat() {
+            document.getElementById('step-loading').classList.add('view-hidden');
+            document.getElementById('step-2').classList.remove('view-hidden');
+
+            const isKnown = extractedData.company !== "贵公司";
+            const honorific = isKnown ? `**${extractedData.name}** ${extractedData.title}` : `贵宾`;
+
+            // 大模型系统人设指令
+            const SYSTEM_PROMPT = `你是顶尖的麦肯锡级AI商业战略顾问。现在在展会现场与【${extractedData.company}】（所属赛道：${extractedData.industry}）的 ${honorific} 对话。
+核心原则：
+1. 字数极度克制（100字左右），多用专业短句，拒绝废话。
+2. 犀利、一针见血，展现高级感。
+3. 接下来的对话流程：第一轮你只负责给高含金量破局建议（Wow Moment）。然后顺势收网，告诉客户完整报告已生成发邮箱，坚决不再提问。`;
+
+            chatHistory = [{ role: "user", parts: [{ text: SYSTEM_PROMPT }] }, { role: "model", parts: [{ text: "明白，严格执行高管级顾问人设及收网流程。" }] }];
+
+            // AI 的主动首条开场白（无需请求大模型，直接抛出，响应极快）
+            const openingMsg = `你好，${honorific}。系统已扫描建立**【${extractedData.company}】**的商业基本盘。<br><br>基于你们在**【${extractedData.industry}】**赛道的现状，请告诉我，贵司当前最核心的痛点是寻找高质量的大客户线索，还是突破价格内卷实现品牌溢价？（或者描述其他业务瓶颈）`;
+            
+            appendAiMsg(marked.parse(openingMsg));
         }
 
         function autoResize(textarea) {
             textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
-        }
-
-        async function startConsultation() {
-            productName = document.getElementById('init-product').value.trim();
-            if (!productName) return;
-
-            document.getElementById('step-1').classList.add('view-hidden');
-            document.getElementById('step-2').classList.remove('view-hidden');
-
-            const initialMsg = `我的核心产品/行业是：【${productName}】`;
-            appendUserMsg(initialMsg);
-            
-            // 首次请求大模型
-            await fetchAIResponse(initialMsg);
         }
 
         async function sendMessage() {
@@ -253,95 +322,73 @@
 
             turnCount++;
 
-            // 如果到了收网环节（turnCount >= 1 代表用户已经回答了第一个问题）
-            // 我们可以在发给 AI 的内容后暗中加一条指令，确保大模型收网
             let promptToSend = text;
             if (turnCount >= 1) {
-                promptToSend += "\n\n(System Note: 请在本次回复中给出核心价值点后，立刻告知深度报告已生成，要求客户留下邮箱，且不要再提问新问题。)";
+                promptToSend += "\n\n(System Note: 请针对痛点给出极其犀利的破局思路。说完后立刻结尾告知：现场演示时间有限，《定制化深度战略报告》已打包完毕，要求客户确认底部邮箱接收，绝不提出任何新问题。)";
             }
 
             await fetchAIResponse(promptToSend);
             
-            // 在第二次 AI 回复后，显示留资框
             if (turnCount >= 1) {
                 setTimeout(() => {
                     document.getElementById('chat-input-wrapper').classList.add('view-hidden');
                     document.getElementById('lead-gen-wrapper').classList.remove('view-hidden');
-                    document.getElementById('chat-box').style.paddingBottom = "120px";
-                    
-                    // 滚动到底部
-                    const chatBox = document.getElementById('chat-box');
-                    chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
-                }, 2000); // 延迟展示留资，给用户阅读时间
+                    if(extractedData.email) {
+                        document.getElementById('email-input').value = extractedData.email;
+                    }
+                    scrollToBottom();
+                }, 1500);
             }
         }
 
         async function fetchAIResponse(userText) {
-            // 加入历史记录
             chatHistory.push({ role: "user", parts: [{ text: userText }] });
-
             const typingId = showTypingIndicator();
 
             try {
-                // 调用 Gemini (使用 1.5 pro 或 flash 均可，通过 proxy 转发)
-                // 这里的 request 结构匹配 Gemini API
                 const response = await fetch(PROXY_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: chatHistory })
                 });
 
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-
+                if (!response.ok) throw new Error("Network error");
                 const data = await response.json();
                 let aiText = data.candidates[0].content.parts[0].text;
                 
-                // 把模型回复加入历史
                 chatHistory.push({ role: "model", parts: [{ text: aiText }] });
-
                 removeTypingIndicator(typingId);
                 appendAiMsg(marked.parse(aiText));
 
             } catch (error) {
-                console.error("AI Error:", error);
                 removeTypingIndicator(typingId);
-                appendAiMsg("*(网络抖动，智库连接中断)*<br><br>不过，我们针对【" + productName + "】已有极具价值的行业调研模型。建议您留下邮箱，稍后为您直接发送深度分析简报。");
+                appendAiMsg("*(网络抖动，智库短暂延迟)*<br><br>不过基于目前掌握的信息，我们已针对**【" + extractedData.company + "】**的痛点输出了完整的分析简报。建议您核验邮箱，我们直接发送。");
                 
-                // 如果出错，强制进入留资
                 if (turnCount === 0) turnCount = 1; 
                 setTimeout(() => {
                     document.getElementById('chat-input-wrapper').classList.add('view-hidden');
                     document.getElementById('lead-gen-wrapper').classList.remove('view-hidden');
+                    if(extractedData.email) document.getElementById('email-input').value = extractedData.email;
                 }, 1000);
             }
         }
 
-        // ================= UI 渲染逻辑 =================
-
         function appendUserMsg(text) {
             const chatBox = document.getElementById('chat-box');
-            const wrap = document.createElement('div');
-            wrap.className = "self-end max-w-[85%] fade-in";
-            wrap.innerHTML = `<div class="chat-user p-3.5 text-sm leading-relaxed">${text}</div>`;
-            chatBox.appendChild(wrap);
+            chatBox.innerHTML += `<div class="self-end max-w-[85%] fade-in mt-2"><div class="chat-user p-3.5 text-sm leading-relaxed">${text}</div></div>`;
             scrollToBottom();
         }
 
         function appendAiMsg(htmlText) {
             const chatBox = document.getElementById('chat-box');
-            const wrap = document.createElement('div');
-            wrap.className = "flex gap-3 max-w-[95%] fade-in";
-            wrap.innerHTML = `
-                <div class="w-7 h-7 rounded bg-white/10 flex items-center justify-center flex-shrink-0 mt-1 border border-white/20">
-                    <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
-                </div>
-                <div class="chat-ai p-3.5 text-sm text-gray-200 leading-relaxed markdown-body shadow-[0_5px_15px_rgba(0,0,0,0.5)]">
-                    ${htmlText}
+            chatBox.innerHTML += `
+                <div class="flex gap-3 max-w-[95%] fade-in mt-2">
+                    <div class="w-7 h-7 rounded bg-white/10 flex items-center justify-center flex-shrink-0 mt-1 border border-white/20">
+                        <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div class="chat-ai p-3.5 text-sm text-gray-200 leading-relaxed markdown-body shadow-[0_5px_15px_rgba(0,0,0,0.5)]">${htmlText}</div>
                 </div>
             `;
-            chatBox.appendChild(wrap);
             lucide.createIcons();
             scrollToBottom();
         }
@@ -349,20 +396,16 @@
         function showTypingIndicator() {
             const id = 'typing-' + Date.now();
             const chatBox = document.getElementById('chat-box');
-            const wrap = document.createElement('div');
-            wrap.id = id;
-            wrap.className = "flex gap-3 max-w-[80%] fade-in";
-            wrap.innerHTML = `
-                <div class="w-7 h-7 rounded bg-white/10 flex items-center justify-center flex-shrink-0 mt-1 border border-white/20">
-                    <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
-                </div>
-                <div class="chat-ai p-3.5 text-sm flex items-center gap-1 h-12">
-                    <div class="typing-indicator flex gap-1 items-center justify-center">
-                        <span></span><span></span><span></span>
+            chatBox.innerHTML += `
+                <div id="${id}" class="flex gap-3 max-w-[80%] fade-in mt-2">
+                    <div class="w-7 h-7 rounded bg-white/10 flex items-center justify-center flex-shrink-0 mt-1 border border-white/20">
+                        <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div class="chat-ai p-3.5 text-sm flex items-center gap-1 h-12">
+                        <div class="typing-indicator flex gap-1 items-center justify-center"><span></span><span></span><span></span></div>
                     </div>
                 </div>
             `;
-            chatBox.appendChild(wrap);
             lucide.createIcons();
             scrollToBottom();
             return id;
@@ -379,11 +422,8 @@
         }
 
         function submitLead() {
-            const email = document.getElementById('email-input').value.trim();
-            if(!email) return;
-
-            // 这里可以接入真实的 webhook 发送数据
-            console.log("Collected Lead:", { product: productName, email: email, chat: chatHistory });
+            const finalEmail = document.getElementById('email-input').value.trim();
+            if(!finalEmail) return;
 
             document.getElementById('step-2').classList.add('view-hidden');
             document.getElementById('step-3').classList.remove('view-hidden');
