@@ -651,7 +651,7 @@
             const honorific = isKnown && extractedData.name !== "贵宾" ? `**${extractedData.name}** ${extractedData.title}` : `贵宾`;
 
             // 严密的 SYSTEM PROMPT：强制输出报告 + 3个选项
-            const SYSTEM_PROMPT = i18n[currentLang].promptSys.replace('{company}', extractedData.company).replace('{honorific}', honorific).replace('{business}', businessDesc); /*
+            const SYSTEM_PROMPT = i18n[currentLang].promptSys.replace('{company}', extractedData.company).replace('{honorific}', honorific).replace('{business}', businessDesc);
 客户公司：【${extractedData.company}】
 客户身份：【${honorific}】
 核心业务：【${businessDesc}】
@@ -853,6 +853,7 @@
     </script>
 </body>
 </html>
+
 
 
 
