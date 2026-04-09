@@ -88,7 +88,7 @@
         }
 
         .cursor-blink::after {
-            content: '\u25CB';
+            content: '\25CB';
             animation: blink 1s step-start infinite;
             color: #4ade80;
             margin-left: 2px;
@@ -131,6 +131,8 @@
             color: #ccc;
             transition: all 0.2s;
             cursor: pointer;
+            white-space: normal;
+            word-break: break-word;
         }
         .reply-option-btn:hover { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.3); color: #4ade80; }
     </style>
@@ -192,12 +194,11 @@
 
     <!-- VIEW 2: 顧問會談 -->
     <main id="step-2" class="absolute inset-0 top-[90px] z-20 flex flex-col bg-dark view-hidden">
-        <div id="chat-box" class="flex-grow p-5 overflow-y-auto flex flex-col gap-5 pb-40 custom-scrollbar"></div>
+        <!-- 聊天內容區：選項按鈕也會嵌入此處，不會遮擋內容 -->
+        <div id="chat-box" class="flex-grow p-5 overflow-y-auto flex flex-col gap-4 custom-scrollbar" style="padding-bottom: 80px;"></div>
 
-        <div class="absolute bottom-0 left-0 right-0 z-30 bg-dark/90 backdrop-blur-md border-t border-white/5 p-4 pt-2">
-            
-            <div id="options-wrapper" class="flex flex-col gap-2 mb-3 view-hidden">
-            </div>
+        <!-- 底部只保留輸入框和留資模組 -->
+        <div id="bottom-bar" class="sticky bottom-0 left-0 right-0 z-30 bg-dark/90 backdrop-blur-md border-t border-white/5 p-4 pt-2">
 
             <div id="chat-input-wrapper" class="glass-card flex items-end gap-2 p-2 relative fade-in">
                 <textarea id="chat-input" rows="1" 
@@ -269,7 +270,7 @@
             "Compiling strategic matrix..."
         ];
 
-        const PROMPT_SYS = "你是一名身價千萬的頂尖AI商業戰略顧問。\n客戶公司：【{company}】\n客戶身份：【{honorific}】\n核心業務：【{business}】\n\n要求：\n1. 第一輪回覆：基於他的業務和公司，給出一份約300字的【深度市場破冰洞察】，必須犀利指出行業痛點，展現出極高的專業度。\n2. 格式要求：使用Markdown排版，重點加粗。\n3. 選項機制（核心）：在你的回覆結尾，【必須】提供3個深入探討的選項，用來引導用戶。選項格式嚴格如下（每行一個，必須以\"選項X: \"開頭）：\n選項1: [提問或探討方向1]\n選項2: [提問或探討方向2]\n選項3: [提問或探討方向3]";
+        const PROMPT_SYS = "你是一名身價千萬的頂尖AI商業戰略顧問。\n客戶公司：【{company}】\n客戶身份：【{honorific}】\n核心業務：【{business}】\n\n要求：\n1. 第一輪回覆：基於他的業務和公司，給出一份約300字的【深度市場破冰洞察】，必須犀利指出行業痛點，展現出極高的專業度。\n2. 格式要求：使用Markdown排版，重點加粗。\n3. 選項機制（核心）：在你的回覆結尾，【必須】提供3個深入探討的選項，用來引導用戶。選項格式嚴格如下（每行一個，必須以"選項X: "開頭）：\n選項1: [提問或探討方向1]\n選項2: [提問或探討方向2]\n選項3: [提問或探討方向3]";
 
         const PROMPT_TURN = "(System Note: 請針對客戶的回答進行犀利分析，並在結尾嚴格按照'選項1: ...'的格式給出3個追問選項。回覆語言請嚴格使用繁體中文。)";
 
@@ -389,7 +390,7 @@
         }
 
         function sendOptionMessage(text) {
-            hideOptions();
+            removeInlineOptions();
             document.getElementById('chat-input').value = '';
             appendUserMsg(text);
             handleTurn(text);
@@ -400,14 +401,33 @@
             const text = inputEl.value.trim();
             if (!text) return;
             inputEl.value = ''; inputEl.style.height = 'auto';
-            hideOptions();
+            removeInlineOptions();
             appendUserMsg(text);
             handleTurn(text);
         }
 
-        function hideOptions() {
-            document.getElementById('options-wrapper').classList.add('view-hidden');
-            document.getElementById('options-wrapper').innerHTML = '';}
+        function removeInlineOptions() {
+            var existing = document.getElementById('inline-options');
+            if (existing) existing.remove();
+        }
+
+        // 將選項按鈕嵌入聊天流中（不再使用懸浮底部）
+        function appendInlineOptions(options) {
+            removeInlineOptions();
+            var chatBox = document.getElementById('chat-box');
+            var wrapper = document.createElement('div');
+            wrapper.id = 'inline-options';
+            wrapper.className = 'flex flex-col gap-2 fade-in mt-2 mb-2';
+            options.forEach(function(opt) {
+                var btn = document.createElement('button');
+                btn.className = 'reply-option-btn';
+                btn.textContent = opt;
+                btn.onclick = function() { sendOptionMessage(opt); };
+                wrapper.appendChild(btn);
+            });
+            chatBox.appendChild(wrapper);
+            scrollToBottom();
+        }
 
         async function handleTurn(userText) {
             turnCount++;
@@ -463,18 +483,9 @@
 
                 await typeWriterEffect(contentBox, mainText);
 
+                // 選項嵌入聊天流中
                 if (options.length > 0 && turnCount < 2) {
-                    const optWrapper = document.getElementById('options-wrapper');
-                    optWrapper.innerHTML = '';
-                    options.forEach(function(opt) {
-                        var btn = document.createElement('button');
-                        btn.className = 'reply-option-btn truncate';
-                        btn.textContent = opt;
-                        btn.onclick = function() { sendOptionMessage(opt); };
-                        optWrapper.appendChild(btn);
-                    });
-                    optWrapper.classList.remove('view-hidden');
-                    scrollToBottom();
+                    appendInlineOptions(options);
                 }
 
             } catch (err) {
