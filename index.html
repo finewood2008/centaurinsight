@@ -555,7 +555,7 @@
             "Compiling strategic matrix..."
         */
 
-        function checkInitInput() {
+        function checkInitInput() { console.log("Input changed!");
             const val = document.getElementById('init-product').value.trim();
             document.getElementById('btn-card').disabled = (val.length === 0);
         }
@@ -853,6 +853,7 @@
     </script>
 </body>
 </html>
+
 
 
 
