@@ -553,7 +553,6 @@
             "Cross-referencing {business} market trends...",
             "Extracting sentiment from recent news...",
             "Compiling strategic matrix..."
-        */
 
         function checkInitInput() { console.log("Input changed!");
             const val = document.getElementById('init-product').value.trim();
@@ -662,7 +661,6 @@
 3. 选项机制（核心）：在你的回复结尾，【必须】提供3个深入探讨的选项，用来引导用户。选项格式严格如下（每行一个，必须以"选项X: "开头）：
 选项1: [提问或探讨方向1]
 选项2: [提问或探讨方向2]
-*/
 
             chatHistory = [{ role: "user", parts: [{ text: SYSTEM_PROMPT }] }];
             fetchAIResponse(SYSTEM_PROMPT, true); // 第一次静默发送并获取惊艳开场
@@ -853,6 +851,7 @@
     </script>
 </body>
 </html>
+
 
 
 
