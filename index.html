@@ -756,13 +756,13 @@
                 // 解析文本和选项
                 let mainText = aiText;
                 let options = [];
-                const optionRegex = new RegExp(pfx + "\\\\d:\\\\s*(.*)", "g");
+                const optionRegex = new RegExp("选项\\\\d:\\\\s*(.*)", "g");
                 let match;
                 while ((match = optionRegex.exec(aiText)) !== null) {
                     options.push(match[1]);
                 }
                 // 从主文本中剔除选项部分
-                mainText = aiText.replace(new RegExp(pfx + "\\\\d:\\\\s*(.*)", "g"), "").trim();
+                mainText = aiText.replace(new RegExp("选项\\\\d:\\\\s*(.*)", "g"), "").trim();
 
                 // 启动打字机效果
                 await typeWriterEffect(contentBox, mainText);
