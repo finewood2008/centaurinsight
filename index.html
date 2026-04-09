@@ -117,7 +117,7 @@
         function updateUI() {
             const t = i18n[currentLang];
             // Update static elements
-            document.querySelector('header p').innerHTML = t.headerSubtitle;
+            document.querySelector('header p').innerText = t.headerSubtitle;
             document.querySelector('#step-1 h2').innerHTML = t.title1;
             document.querySelector('#step-1 p').innerHTML = t.desc1;
             document.getElementById('init-product').placeholder = t.inputPlaceholder;
@@ -514,7 +514,7 @@
         function updateUI() {
             const t = i18n[currentLang];
             // Update static elements
-            document.querySelector('header p').innerHTML = t.headerSubtitle;
+            document.querySelector('header p').innerText = t.headerSubtitle;
             document.querySelector('#step-1 h2').innerHTML = t.title1;
             document.querySelector('#step-1 p').innerHTML = t.desc1;
             document.getElementById('init-product').placeholder = t.inputPlaceholder;
@@ -853,6 +853,7 @@
     </script>
 </body>
 </html>
+
 
 
 
