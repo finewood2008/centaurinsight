@@ -550,11 +550,34 @@
             chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
         }
 
-        function submitLead() {
+        async function submitLead() {
             const email = document.getElementById('email-input').value.trim();
-            if(!email) return alert("請留下接收報告的郵箱");
+            if(!email) return alert(i18n[currentLang].emailPlaceholder || "请留下接收报告的邮箱");
+            
             document.getElementById('step-2').classList.add('view-hidden');
             document.getElementById('step-3').classList.remove('view-hidden');
+
+            // 整理需要发送到后台的数据
+            const payload = {
+                name: extractedData.name,
+                title: extractedData.title,
+                company: extractedData.company,
+                email: email,
+                business: businessDesc,
+                chatHistory: chatHistory.map(msg => `${msg.role === 'user' ? '客户' : '顾问'}: ${msg.parts[0].text}`)
+            };
+
+            try {
+                // 这里替换为你接下来部署的 Cloudflare Worker 地址
+                const WORKER_URL = "https://centaur-lead.finewood2008.workers.dev"; 
+                fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(e => console.log("静默提交失败", e));
+            } catch (err) {
+                console.error("提交出错", err);
+            }
         }
 
         // typing indicator animation
