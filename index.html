@@ -554,9 +554,18 @@
             "Extracting sentiment from recent news...",
             "Compiling strategic matrix..."
 
-        function checkInitInput() { console.log("Input changed!");
+        function checkInitInput() {
             const val = document.getElementById('init-product').value.trim();
-            document.getElementById('btn-card').disabled = (val.length === 0);
+            const btn = document.getElementById('btn-card');
+            if (val.length === 0) {
+                btn.setAttribute('disabled', 'true');
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.classList.remove('btn-glow');
+            } else {
+                btn.removeAttribute('disabled');
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                btn.classList.add('btn-glow');
+            }
         }
 
         function triggerCamera() { document.getElementById('cam-card').click(); }
