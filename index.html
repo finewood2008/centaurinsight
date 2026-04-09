@@ -309,7 +309,7 @@
             <input type="file" id="cam-card" accept="image/*" capture="environment" onchange="handleCapture()" style="display: none;">
             
             <button type="button" onclick="triggerCamera()" id="btn-card" disabled
-                    class="btn-glow w-full h-14 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                    class="btn-glow w-full h-14 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] relative z-20">
                 <i data-lucide="scan-face" class="w-5 h-5"></i>
                 <span class="text-sm font-semibold tracking-wide">扫描名片建立档案</span>
             </button>
@@ -558,17 +558,20 @@
             const val = document.getElementById('init-product').value.trim();
             const btn = document.getElementById('btn-card');
             if (val.length === 0) {
-                btn.setAttribute('disabled', 'true');
+                btn.disabled = true;
                 btn.classList.add('opacity-50', 'cursor-not-allowed');
                 btn.classList.remove('btn-glow');
             } else {
-                btn.removeAttribute('disabled');
+                btn.disabled = false;
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
                 btn.classList.add('btn-glow');
             }
         }
 
-        function triggerCamera() { document.getElementById('cam-card').click(); }
+        function triggerCamera() { 
+            console.log("Trigger camera clicked");
+            document.getElementById('cam-card').click(); 
+        }
 
         function compressImage(file, maxWidth = 600) {
             return new Promise((resolve, reject) => {
