@@ -568,8 +568,8 @@
             };
 
             try {
-                // 这里替换为你接下来部署的 Cloudflare Worker 地址
-                const WORKER_URL = "https://centaur-lead.finewood2008.workers.dev"; 
+                // 现在将数据发送给我们刚刚启动的本地 Python 服务，以便你一觉醒来能看到生成的 PDF 报告
+                const WORKER_URL = "http://127.0.0.1:5000/api/submit_lead"; 
                 fetch(WORKER_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
