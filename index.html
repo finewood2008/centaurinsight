@@ -542,7 +542,7 @@
         
         let extractedData = { name: "贵宾", title: "负责人", company: "贵司", email: "" };
         let businessDesc = "";
-        let chatHistory = [*/
+        let chatHistory = [];
         let turnCount = 0; 
 
         
@@ -591,7 +591,7 @@
                 document.getElementById('step-loading').classList.remove('view-hidden');
 
                 try {
-                    const file = fileInput.files[0*/
+                    const file = fileInput.files[0];
                     const base64Data = await compressImage(file);
                     await extractCardInfo(base64Data);
                 } catch (e) {
@@ -613,7 +613,7 @@
                 const data = await res.json();
                 let aiText = data.candidates[0].content.parts[0].text.replace(/```json/g, "").replace(/```/g, "").trim();
                 const parsed = JSON.parse(aiText);
-                if (parsed.name) extractedData.name = parsed.name.split(' ')[0*/ 
+                if (parsed.name) extractedData.name = parsed.name.split(' ')[0]; 
                 if (parsed.title) extractedData.title = parsed.title;
                 if (parsed.company) extractedData.company = parsed.company;
                 if (parsed.email) extractedData.email = parsed.email;
@@ -664,7 +664,7 @@
 选项2: [提问或探讨方向2]
 */
 
-            chatHistory = [{ role: "user", parts: [{ text: SYSTEM_PROMPT }] }*/
+            chatHistory = [{ role: "user", parts: [{ text: SYSTEM_PROMPT }] }];
             fetchAIResponse(SYSTEM_PROMPT, true); // 第一次静默发送并获取惊艳开场
         }
 
@@ -745,7 +745,7 @@
                 
                 // 解析文本和选项
                 let mainText = aiText;
-                let options = [*/
+                let options = [];
                 const optionRegex = new RegExp(pfx + "\\\\d:\\\\s*(.*)", "g");
                 let match;
                 while ((match = optionRegex.exec(aiText)) !== null) {
@@ -791,7 +791,7 @@
             const chars = fullMarkdown.split('');
             
             for (let i = 0; i < chars.length; i++) {
-                currentText += chars[i*/
+                currentText += chars[i];
                 // 使用 marked 渲染当前截断的文本
                 element.innerHTML = marked.parse(currentText);
                 scrollToBottom();
@@ -853,6 +853,7 @@
     </script>
 </body>
 </html>
+
 
 
 
