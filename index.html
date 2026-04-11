@@ -165,7 +165,7 @@
             
             <input type="file" id="cam-card" accept="image/*" capture="environment" onchange="handleCapture()" style="display: none;">
             
-            <button type="button" onclick="triggerCamera()" id="btn-card" disabled
+            <button type="button" onclick="triggerCamera()" id="btn-card"
                     class="btn-glow w-full h-14 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)] relative z-20">
                 <i data-lucide="scan-face" class="w-5 h-5"></i>
                 <span class="text-sm font-semibold tracking-wide">掃描名片建立檔案</span>
@@ -280,14 +280,32 @@
             const val = document.getElementById('init-product').value.trim();
             const btn = document.getElementById('btn-card');
             if (val.length === 0) {
-                btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-                btn.classList.remove('btn-glow');
+                btn.classList.add('btn-glow');
+                btn.innerHTML = '<i data-lucide="scan-face" class="w-5 h-5"></i><span class="text-sm font-semibold tracking-wide">掃描名片建立檔案</span>';
+                btn.onclick = triggerCamera;
+                lucide.createIcons();
             } else {
                 btn.disabled = false;
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
                 btn.classList.add('btn-glow');
+                btn.innerHTML = '<i data-lucide="zap" class="w-5 h-5"></i><span class="text-sm font-semibold tracking-wide">連線 AI 戰略顧問</span>';
+                btn.onclick = enterChatFromInput;
+                lucide.createIcons();
             }
+        }
+
+        function enterChatFromInput() {
+            const val = document.getElementById('init-product').value.trim();
+            if(!val) return;
+            businessDesc = val;
+            
+            document.getElementById('step-1').classList.add('view-hidden');
+            document.getElementById('step-loading').classList.remove('view-hidden');
+            document.querySelector('#step-loading h3').innerText = "CONNECTING...";
+            
+            setTimeout(() => {
+                startChat();
+            }, 1000);
         }
 
         function triggerCamera() { 
